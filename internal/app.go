@@ -46,7 +46,6 @@ func requestAccessToken(code string) *AccessResponse {
 	q.Add("grant_type", "authorization_code")
 
 	req.URL.RawQuery = q.Encode()
-	fmt.Println(req.URL.String())
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -76,7 +75,6 @@ func refreshAccessToken(refreshToken string) *AccessResponse {
 	q.Add("grant_type", "refresh_token")
 
 	req.URL.RawQuery = q.Encode()
-	fmt.Println(req.URL.String())
 
 	client := &http.Client{}
 	res, err := client.Do(req)

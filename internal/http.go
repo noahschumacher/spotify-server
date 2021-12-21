@@ -2,7 +2,6 @@ package spotify
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -14,7 +13,7 @@ var (
 )
 
 type authURL struct {
-	URL string `json:"URL"` 
+	URL string `json:"URL"`
 }
 
 func AuthURLBuilder(w http.ResponseWriter, r *http.Request) {
@@ -34,9 +33,9 @@ func AuthURLBuilder(w http.ResponseWriter, r *http.Request) {
 	aurl := authURL{URL: req.URL.String()}
 
 	w.Header().Set("Content-Type", "application/json")
-	test := json.NewEncoder(w)
-	test.SetEscapeHTML(false)
-	test.Encode(aurl)
+	encoder := json.NewEncoder(w)
+	encoder.SetEscapeHTML(false)
+	encoder.Encode(aurl)
 }
 
 func AuthCallback(w http.ResponseWriter, r *http.Request) {
