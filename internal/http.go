@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	authCallbackURL = "http://localhost:8080/callback"
+	authCallbackURL = os.Getenv("CALLBACK_URL")
 )
 
 type authURL struct {
-	URL string
+	URL string `json:"URL"` 
 }
 
 func AuthURLBuilder(w http.ResponseWriter, r *http.Request) {
@@ -22,8 +22,6 @@ func AuthURLBuilder(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("Error creating request")
 	}
-
-	fmt.Println(os.Getenv("SPOTIFY_ID"))
 
 	q := req.URL.Query()
 	q.Add("response_type", "code")
@@ -33,11 +31,12 @@ func AuthURLBuilder(w http.ResponseWriter, r *http.Request) {
 	q.Add("state", State)
 
 	req.URL.RawQuery = q.Encode()
-	fmt.Println(req.URL.String()) // Good
 	aurl := authURL{URL: req.URL.String()}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(aurl) // Bad
+	test := json.NewEncoder(w)
+	test.SetEscapeHTML(false)
+	test.Encode(aurl)
 }
 
 func AuthCallback(w http.ResponseWriter, r *http.Request) {
